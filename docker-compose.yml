@@ -1,0 +1,24 @@
+services:
+  server:
+    container_name: ws_server
+    build: ./server
+    volumes:
+      - ./server:/usr/src/app
+    ports:
+      - "4000:4000"
+    environment:
+      - SERVER_PORT=4000
+      - CLIENT_PORT=3000
+
+  client:
+    container_name: react_client
+    build: ./client
+    volumes:
+      - ./client:/usr/src/app
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_REACT_APP_SERVER_PORT=4000
+      - VITE_REACT_APP_CLIENT_PORT=3000
+    depends_on:
+      - server

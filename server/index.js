@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-require('dotenv').config();
+require("dotenv").config();
 
 const express = require("express");
 const { createServer } = require("node:http");
@@ -11,8 +10,14 @@ const app = express();
 app.use(cors());
 
 const server = createServer(app);
+
+const clientPort = process.env.CLIENT_PORT ? process.env.CLIENT_PORT : 3000;
+
 const socket = new Server(server, {
-  cors: { origin: "http://localhost:5173", methods: ["GET", "POST"] },
+  cors: {
+    origin: `http://localhost:${clientPort}`,
+    methods: ["GET", "POST"],
+  },
 });
 
 const users = new Set();
@@ -35,10 +40,10 @@ socket.on("connection", (ws) => {
         sendAt: getFormattedTime(),
       };
 
-			users.forEach((user) => {
-				user.ws.send(JSON.stringify(messageToSend));
-			}); 
-		} catch (e) {
+      users.forEach((user) => {
+        user.ws.send(JSON.stringify(messageToSend));
+      });
+    } catch (e) {
       console.error("Erro ao enviar mensagem ao cliente", e);
     }
   });
@@ -48,8 +53,8 @@ socket.on("connection", (ws) => {
   });
 });
 
-const port = process.env.SERVER_PORT ? process.env.SERVER_PORT : 3000;
+const serverPort = process.env.SERVER_PORT ? process.env.SERVER_PORT : 4000;
 
-server.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+server.listen(serverPort, () => {
+  console.log(`Servidor rodando em http://localhost:${serverPort}`);
 });
