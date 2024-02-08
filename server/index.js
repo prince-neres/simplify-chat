@@ -11,11 +11,11 @@ app.use(cors());
 
 const server = createServer(app);
 
-const clientPort = process.env.CLIENT_PORT ? process.env.CLIENT_PORT : 3000;
+//const clientPort = process.env.CLIENT_PORT ? process.env.CLIENT_PORT : 3000;
 
 const socket = new Server(server, {
   cors: {
-    origin: `http://localhost:${clientPort}`,
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
